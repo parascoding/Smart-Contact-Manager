@@ -104,5 +104,10 @@ public class User {
 	public void setContact(List<Contact> contact) {
 		this.contact = contact;
 	}
+
+    public String toString(){
+        return "["+this.id+", "+this.name+", "+
+            this.email+"]";
+    }
    
 }
