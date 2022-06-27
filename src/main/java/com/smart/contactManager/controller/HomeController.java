@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +19,9 @@ import com.smart.contactManager.entities.User;
 import com.smart.contactManager.helper.Message;
 
 @Controller
-public class HomeController {
+public class HomeController {   
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
 
@@ -53,6 +56,7 @@ public class HomeController {
             }
             user.setRole("ROLE_USER");
             user.setEnabled(true);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
             model.addAttribute("user", new User());
             session.setAttribute("message", new Message("Succesfully Registered", "alert-success"));
@@ -68,8 +72,8 @@ public class HomeController {
 
 
     // Login Handler
-    @RequestMapping("/login")
-    public String login(Model model){
+    @GetMapping("/signin")
+    public String customLogin(Model model){
         model.addAttribute("user", new User());
         return "login";
     }
