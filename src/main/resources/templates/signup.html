@@ -11,14 +11,16 @@
         <div class="container">
             <div class="row">
                 <div class="col md-6">
-                    <div th:if="${session.message}" th:classappend="${session.message.type}" role="alert">
-                        <p th:text="${session.message.content}"></p>
-                        <th:block th:text="${#session.removeAttribute('message')}"></th:block>
-                      </div>
-                    <div class="container text-center">
-                        <img src="" th:src="@{/img/registerIcon.png}" alt="" style="width: 100px">
-                    </div>
                     <div class="my-card mt-3">
+                        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                            <div class="text-center">
+                                <p th:text="${session.message.content}"></p>    
+                            </div>
+                            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                          </div>
+                        <div class="container text-center">
+                            <img src="" th:src="@{/img/registerIcon.png}" alt="" style="width: 100px">
+                        </div>
                         <h1 class="text-center">Register Here</h1>
 
                         <form action="" th:action="@{/do_register}" method="post" th:object="${user}">
@@ -29,7 +31,7 @@
                             </div>
                             <!-- Email Field -->
                             <div class="form-group">
-                                <label for="emai_field">Your Email</label>
+                                <label for="email_field">Your Email</label>
                                 <input name="email" type="email" class="form-control" id="email_field" aria-describedby="emailHelp" placeholder="Enter Email Address" required th:value="${user.email}"/>
                             </div>
                             <!-- Password Field -->

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::Layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp Page</title>
+</head>
+<body>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col md-6">
+                    <div class="container text-center">
+                        <img src="" th:src="@{/img/registerIcon.png}" alt="" style="width: 100px">
+                    </div>
+                    <div class="my-card mt-3">
+                        <h1 class="text-center">Login Here</h1>
+
+                        <form action="" th:action="@{/do_login}" method="post" th:object="${user}">
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <label for="name_field">Your Email</label>
+                                <input  name="name" type="email" class="form-control" id="email_field" aria-describedby="emailHelp" placeholder="Enter Email" required th:value="${user.email}"/>
+                            </div>
+                            <!-- Password Field -->
+                            <div class="form-group">
+                                <label for="password_field">Your Password</label>
+                                <input name="email" type="password" class="form-control" id="password_field" aria-describedby="passwordHelp" placeholder="Enter Password" required th:value="${user.password}"/>
+                            </div>
+
+                            <div class="container text-center">
+                                <button type="submit" class="btn bg-primary">Login</button>
+                                
+                                <button type="reset" class="btn btn-danger">Reset</button>
+                            </div> 
+                                
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
