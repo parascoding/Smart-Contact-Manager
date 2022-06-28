@@ -12,6 +12,14 @@
         
         <div class="card ml-3 mr-3 mb-1">
             <h2 class="card-header text-center"> Add Contact </h2>
+            <div th:if="${session.message}"  class="container col-8">
+					
+                <div th:classappend="${'alert-'+session.message.type}" class="alert  text-center">
+                    <span th:text="${session.message.content}"></span>
+                </div>
+                <!-- remove alert after completion -->
+                <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+            </div>
             <div class="card-body">
                 <div class="container-fluid mt-1">
                     <div class="row">
@@ -28,11 +36,13 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
                                         <i class="fa fa-plus">
-    
                                         </i>
                                     </div>
                                 </div>
-                                <input type="text" id="firstName" name="name" placeholder="Enter Name Here" class="form-control" style="width: 100vh">
+                                <input type="text" id="firstName" name="name" placeholder="Enter Name Here" class="form-control" style="width: 100vh"
+                                th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
+                                >
+                                <div class="invalid-feedback" th:each="e: ${#fields.errors('name')}" th:text="${e}"></div>
                             </div>
     
                             <!-- Second Name -->
@@ -44,9 +54,12 @@
                                         </i>
                                     </div>
                                 </div>
-                                <input type="text" id="secondName" name="secondName" placeholder="Enter Nick Name Here" class="form-control">
+                                <input type="text" id="secondName" name="secondName" placeholder="Enter Nick Name Here" class="form-control"
+                                th:classappend="${#fields.hasErrors('secondName')?'is-invalid':''}"
+                                >
+                                <div class="invalid-feedback" th:each="e: ${#fields.errors('secondName')}" th:text="${e}"></div>
                             </div>
-    
+                            
                             <!-- Email -->
                             <div class="input-group mt-3">
                                 <div class="input-group-prepend">
@@ -54,7 +67,11 @@
                                         <i class="fa-solid fa-at"></i>
                                     </div>
                                 </div>
-                                <input type="email" id="email" name="email" placeholder="Enter Email Here" class="form-control">
+                                <input type="email" id="email" name="email" placeholder="Enter Email Here" class="form-control"
+                                th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
+                                >
+                                <div class="invalid-feedback" th:each="e: ${#fields.errors('email')}" th:text="${e}"></div>
+
                             </div>
                             <!-- Phone -->
                             <div class="input-group mt-3">
@@ -64,7 +81,10 @@
     
                                     </div>
                                 </div>
-                                <input type="number" id="phone" name="phone" placeholder="Enter Phone Here" class="form-control">
+                                <input type="number" id="phone" name="phone" placeholder="Enter Phone Here" class="form-control"
+                                th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}"
+                                >
+                                <div class="invalid-feedback" th:each="e: ${#fields.errors('phone')}" th:text="${e}"></div>
                             </div>
                              <!-- Work -->
                              <div class="input-group mt-3">
