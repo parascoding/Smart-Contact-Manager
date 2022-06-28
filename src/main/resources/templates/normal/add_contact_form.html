@@ -41,6 +41,7 @@
                                 </div>
                                 <input type="text" id="firstName" name="name" placeholder="Enter Name Here" class="form-control" style="width: 100vh"
                                 th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
+                                required
                                 >
                                 <div class="invalid-feedback" th:each="e: ${#fields.errors('name')}" th:text="${e}"></div>
                             </div>
@@ -83,6 +84,7 @@
                                 </div>
                                 <input type="number" id="phone" name="phone" placeholder="Enter Phone Here" class="form-control"
                                 th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}"
+                                required
                                 >
                                 <div class="invalid-feedback" th:each="e: ${#fields.errors('phone')}" th:text="${e}"></div>
                             </div>
@@ -102,7 +104,7 @@
                                         <i class="fa-solid fa-comment"></i>
                                     </div>
                                 </div>
-                                <textarea type="text" id="description" name="description" placeholder="Enter Description Here" class="form-control" rows="10" cols="10"></textarea>
+                                <textarea type="text" id="description" name="description" placeholder="Enter Description Here" class="form-control" rows="10" cols="10" ></textarea>
                             </div>
                             <div class="custom-file mt-2">
                                 <input type="file" name="profileImage">
