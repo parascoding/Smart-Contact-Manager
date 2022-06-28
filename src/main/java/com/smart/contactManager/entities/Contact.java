@@ -96,4 +96,8 @@ public class Contact {
         this.user = user;
     }
 
+    public String toString(){
+        return "[ "+name+", "+email+", "+phone+"]";
+    }
+
 }   

@@ -38,6 +38,7 @@ body{
     height: 100%;
     position: fixed;
     padding-top: 45px;
+    z-index: 999999999;
 
   } 
   .sidebar a{
@@ -76,6 +77,9 @@ body{
     font-size: 36px;
     cursor: pointer;
   }
+  
   .content{
+    margin-top: 55px !important;
     margin-left: 20%;
+    height: 100%;
   } 
