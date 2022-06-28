@@ -8,9 +8,11 @@ import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.security.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.apache.coyote.ContainerThreadMarker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +82,7 @@ public class UserController {
             }   
             if(file.isEmpty()){
                 System.out.println("File Empty");
+                contact.setImage("default_img.png");
             } else{
                 
                 String fileName = user.getId()+"_"+contact.getPhone()+file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
@@ -118,4 +121,13 @@ public class UserController {
         return "normal/show_contacts";
     }
     
+    // Specific contact detail
+    @GetMapping("/{cId}/contact")
+    public String showContactDetail(@PathVariable("cId") Integer cId, Model model){
+        
+        Optional<Contact> contactOptional=contactRepository.findById(cId);
+        Contact contact=contactOptional.get();
+        model.addAttribute("contact", contact);
+        return "normal/contact_detail";
+    }
 }
