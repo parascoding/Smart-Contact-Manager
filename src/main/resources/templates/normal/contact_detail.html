@@ -51,13 +51,17 @@
                         <th:block th:text="${contact.description}"></th:block>
                       </div>
                       <div class="container text-center mt-3">
-                            <button class="btn btn-danger btn-block">Delete</button>
+                        <a href="" class="btn btn-danger btn-block"
+                        th:onclick="|deleteContact(${contact.cId})|">
+                          Delete</a>
                             <button class="btn btn-info btn-block">Update</button>
                       </div>
                 </div>
             </div>
         </div>
-        <div th:unless="${contact}">
+        <div th:unless="${contact}"
+        class="text-center"
+        >
             <h1>Unauthorized</h1>
         </div>
     </section>

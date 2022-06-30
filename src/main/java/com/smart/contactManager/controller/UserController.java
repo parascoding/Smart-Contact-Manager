@@ -12,9 +12,8 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
-import org.apache.coyote.ContainerThreadMarker;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.core.io.ClassPathResource;
@@ -123,11 +122,36 @@ public class UserController {
     
     // Specific contact detail
     @GetMapping("/{cId}/contact")
-    public String showContactDetail(@PathVariable("cId") Integer cId, Model model){
-        
+    public String showContactDetail(@PathVariable("cId") Integer cId, Model model, Principal principal){
+    
         Optional<Contact> contactOptional=contactRepository.findById(cId);
         Contact contact=contactOptional.get();
+
+        String userName = principal.getName();
+        User user=userRepository.getUserByUserName(userName);
+        if(user.getId()!=contact.getUser().getId()){
+            return "/error";
+        }
         model.addAttribute("contact", contact);
         return "normal/contact_detail";
+    }
+
+    @GetMapping("/delete/{cId}")
+    public String deleteContact(@PathVariable ("cId") Integer cId, Model model, Principal principal
+                , HttpSession session){
+        Optional<Contact> contactOptional=contactRepository.findById(cId);
+        Contact contact=contactOptional.get();
+        String userName = principal.getName();
+        User user = userRepository.getUserByUserName(userName);
+        if(user.getId()!=contact.getUser().getId()){
+            return "/error";
+        }
+        File file = new File(contact.getImage());
+        if(!file.getName().equals("default_img.png"))
+        file.delete();
+        contact.setUser(null);
+        contactRepository.delete(contact);
+        session.setAttribute("message", new Message("Deleted", "success"));
+        return "redirect:/user/show-contacts/0";
     }
 }

@@ -9,6 +9,11 @@
 <body>
     <section>
         <div class="card mr-3 ml-3">
+          <div th:if="${session.message}" th:classappend="'alert-'+${session.message.type}" class="text-center" role="alert">
+                <p th:text="${session.message.content}"></p>    
+            </div>
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+          </div>
             <div class="card-body">
                 <h1 class="text-center">
                     Your Contacts
@@ -42,7 +47,9 @@
                         <td th:text="${c.phone}"></td>
 
                         <td>
-                            <button class="btn btn-danger btn-sm">Delete</button>
+                            <a href="" class="btn btn-danger btn-sm"
+                            th:onclick="|deleteContact(${c.cId})|">
+                              Delete</a>
                             <button class="btn btn-success btn-sm">Update</button>
                             <a 
                             th:href="@{'/user/'+${c.cId}+'/contact/'}"
