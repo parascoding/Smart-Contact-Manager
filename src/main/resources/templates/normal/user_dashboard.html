@@ -9,7 +9,9 @@
 <body>
     
     <section>
-        <h1>Dashboard</h1>
+        <h1>Hello, <span th:text="${user.name}"></span></h1>
+
+        You have saved <span th:text="${size}"></span> contacts with us. Please use the platform to save your contacts.
     </section>
 </body>
 </html>

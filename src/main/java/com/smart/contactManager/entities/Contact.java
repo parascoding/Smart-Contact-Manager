@@ -107,7 +107,11 @@ public class Contact {
     }
 
     public String toString(){
-        return "[ "+name+", "+email+", "+phone+"]";
+        return "[ "+cId+", "+name+", "+email+", "+phone+"]";
     }
 
+    @Override
+    public boolean equals(Object obj){
+        return this.cId == ((Contact)(obj)).getCId();
+    }
 }   

@@ -1,5 +1,7 @@
 package com.smart.contactManager.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -26,8 +28,9 @@ public class HomeController {
     private UserRepository userRepository;
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model, Principal principal){
         model.addAttribute("title", "Smart Contact Manager");
+        
         return "home";
     }
     @GetMapping("/about")

@@ -12,6 +12,11 @@
         <div class="card mr-3 ml-3"
         th:if="${contact}"
         >
+            <div th:if="${session.message}" th:classappend="'alert-'+${session.message.type}" class="text-center" role="alert"> 
+              <p th:text="${session.message.content}"></p>    
+            </div>
+          <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+          </div>
             <div class="card-body">
                 <div class="container text-center">
                     <img src="" 
@@ -54,7 +59,10 @@
                         <a href="" class="btn btn-danger btn-block"
                         th:onclick="|deleteContact(${contact.cId})|">
                           Delete</a>
-                            <button class="btn btn-info btn-block">Update</button>
+                          <form  method="post"
+                          th:action="@{'/user/update-contact/'+${contact.cId}}" class="">
+                            <button type="submit" class="btn btn-success btn-block mt-2">Update</button>
+                          </form>
                       </div>
                 </div>
             </div>

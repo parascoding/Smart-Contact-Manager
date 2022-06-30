@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +60,9 @@ public class UserController {
     @GetMapping("/index")
     public String dashboard(Model model, Principal principal){
         model.addAttribute("title", "User DashBoard");
+        User user=userRepository.getUserByUserName(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("size", user.getContact().size());
         return "normal/user_dashboard";
     }
 
@@ -83,8 +88,8 @@ public class UserController {
                 System.out.println("File Empty");
                 contact.setImage("default_img.png");
             } else{
-                
-                String fileName = user.getId()+"_"+contact.getPhone()+file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new java.util.Date());
+                String fileName = user.getId()+"_"+timeStamp+file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
                 contact.setImage(fileName);
                 File saveFile = new ClassPathResource("static/img").getFile();
                 Path path=Paths.get(saveFile.getAbsolutePath()+File.separator+fileName);
@@ -143,15 +148,60 @@ public class UserController {
         Contact contact=contactOptional.get();
         String userName = principal.getName();
         User user = userRepository.getUserByUserName(userName);
+        user.getContact().remove(contact);
         if(user.getId()!=contact.getUser().getId()){
             return "/error";
         }
         File file = new File(contact.getImage());
-        if(!file.getName().equals("default_img.png"))
-        file.delete();
+        if(file!=null&&!file.getName().equals("default_img.png"))
+            file.delete();
         contact.setUser(null);
         contactRepository.delete(contact);
         session.setAttribute("message", new Message("Deleted", "success"));
+        userRepository.save(user);
         return "redirect:/user/show-contacts/0";
+    }
+
+    @PostMapping("/update-contact/{cId}")
+    public String updateForm(@PathVariable("cId") Integer cId, Model model){
+        model.addAttribute("title", "Edit Contact");
+        Contact contact = contactRepository.findById(cId).get();
+        model.addAttribute("contact",contact);
+        
+        return "normal/updateForm";
+    }
+
+    // Update Contact Handler
+    @PostMapping("/process-update")
+    public String updateHandler(@ModelAttribute Contact contact, @RequestParam("profileImage") MultipartFile file, 
+                        Model model, HttpSession session, Principal principal){
+        try {
+            System.out.println(contact);
+            Contact old=contactRepository.findById(contact.getCId()).get();
+            User user=userRepository.getUserByUserName(principal.getName());
+            if(!file.isEmpty()){
+                // Delete
+                File deleteFile = new ClassPathResource("/static/img").getFile();
+                File file1 = new File(deleteFile, old.getImage());
+                file1.delete();
+                // New
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new java.util.Date());
+                String fileName = user.getId()+"_"+timeStamp+file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+                contact.setImage(fileName);
+                File saveFile = new ClassPathResource("static/img").getFile();
+                Path path=Paths.get(saveFile.getAbsolutePath()+File.separator+fileName);
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                contact.setImage(fileName);
+            } else{
+                contact.setImage(old.getImage());
+            }
+            contact.setUser(user);
+            contactRepository.save(contact);
+            session.setAttribute("message", new Message("Contact is updated....", "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/user/"+contact.getCId()+"/contact";
     }
 }

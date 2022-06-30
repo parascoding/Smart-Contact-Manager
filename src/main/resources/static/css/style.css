@@ -14,7 +14,7 @@ body{
 .my-card{
     padding: 20px;
     background: white;
-    height: 70vh;
+    height: 90%;
 }
 
 #login .container #login-row #login-column #login-box {
@@ -92,4 +92,4 @@ body{
     
   }
   
-  
+ 

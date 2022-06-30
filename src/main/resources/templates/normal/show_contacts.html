@@ -8,12 +8,12 @@
 </head>
 <body>
     <section>
-        <div class="card mr-3 ml-3">
+        <div class="card mr-3 ml-3 my-table">
           <div th:if="${session.message}" th:classappend="'alert-'+${session.message.type}" class="text-center" role="alert">
                 <p th:text="${session.message.content}"></p>    
             </div>
             <th:block th:text="${#session.removeAttribute('message')}"></th:block>
-          </div>
+          
             <div class="card-body">
                 <h1 class="text-center">
                     Your Contacts
@@ -46,15 +46,18 @@
 
                         <td th:text="${c.phone}"></td>
 
-                        <td>
+                        <td class="d-flex">
                             <a href="" class="btn btn-danger btn-sm"
                             th:onclick="|deleteContact(${c.cId})|">
                               Delete</a>
-                            <button class="btn btn-success btn-sm">Update</button>
+                            <form  method="post"
+                            th:action="@{'/user/update-contact/'+${c.cId}}" class="">
+                              <button type="submit" class="btn btn-success btn-sm ml-1">Update</button>
+                            </form>
                             <a 
                             th:href="@{'/user/'+${c.cId}+'/contact/'}"
                             >
-                              <button class="btn btn-info btn-sm">
+                              <button class="btn btn-info btn-sm ml-1">
                                   View
                                 </button>
                             </a>
